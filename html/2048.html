@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgb(230, 203, 139);
+      overflow: hidden;
+      text-align: center;
+    }
+    .title {
+      max-width: 300px;
+      padding: 10px;
+      margin: 10vh auto 20px;
+      font-size: 24px;
+      color: rgb(171, 117, 36);
+    }
+    .container {
+      display: inline-grid;
+      /* width: fit-content; */
+      grid-gap: 6px;
+      grid-template-columns: repeat(4, 60px);
+      grid-template-rows: repeat(4, 60px);
+      padding: 6px;
+      border: 3px solid rgb(171, 117, 36);
+      /* margin: auto; */
+      border-radius: 6px;
+    }
+    .container2 {
+      position: relative;
+      width: 272px;
+      /* padding: 6px; */
+      border: 3px solid rgb(171, 117, 36);
+      margin: auto;
+      border-radius: 6px;
+      font-size: 0;
+    }
+    .item2, .item_default {
+      display: inline-block;
+      width: 60px;
+      height: 60px;
+      margin: 4px;
+      border-radius: 6px;
+      background: #E6CEAC;
+      color: #fff;
+      transition: .5s;
+      line-height: 60px;
+      font-size: 24px;
+      vertical-align: middle;
+      pointer-events: none;
+      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Chrome/Safari/Opera */
+      -khtml-user-select: none; /* Konqueror */
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+      user-select: none; /* Non-prefixed version, currently */
+    }
+    .item2 {
+      position: absolute;
+      transition: .3s;
+    }
+    .item {
+      border-radius: 6px;
+      background: #E6CEAC;
+      color: #fff;
+      transition: .5s;
+      line-height: 60px;
+      font-size: 24px;
+      pointer-events: none;
+      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Chrome/Safari/Opera */
+      -khtml-user-select: none; /* Konqueror */
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+      user-select: none; /* Non-prefixed version, currently */
+    }
+    .item.score_2, .item2.score_2 {
+      background-color: #e0b092;
+    }
+    .item.score_4, .item2.score_4 {
+      background-color: #ece48b;
+    }
+    .item.score_8, .item2.score_8 {
+      background-color: #92e0cc;
+    }
+    .item.score_16, .item2.score_16 {
+      background-color: #92bfe0;
+    }
+    .item.score_32, .item2.score_32 {
+      background-color: #929ce0;
+    }
+    .item.score_64, .item2.score_64 {
+      background-color: #b092e0;
+    }
+    .item.score_128, .item2.score_128 {
+      background-color: #e092c3;
+    }
+    .item.score_256, .item2.score_256 {
+      background-color: #ceb5ca;
+    }
+    .item.score_512, .item2.score_512 {
+      background-color: #b9e092;
+    }
+    .item.score_1024, .item2.score_1024 {
+      background-color: #52b28d;
+    }
+    .item.score_2048, .item2.score_2048 {
+      background-color: #d94d4d;
+    }
+    .item.score_4096, .item2.score_4096 {
+      background-color: #887569;
+    }
+    .item.score_8192, .item2.score_8192 {
+      background-color: #7d7d7d;
+    }
+    .btns {
+      max-width: 300px;
+      padding: 10px;
+      margin: auto;
+    }
+    .btns button {
+      display: block;
+      padding: 0 20px;
+      background-color: transparent;
+      border: 3px solid #2196f3;
+      border-radius: 6px;
+      margin: auto;
+      font-size: 16px;
+      font-weight: bold;
+      color: #2196f3;
+      cursor: pointer;
+    }
+    .btns .result {
+      display: inline-block;
+      margin: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #2196f3;
+    }
+  </style>
+</head>
+<body>
+  <h4 class="title">2048</h4>
+  <!-- <div class="container">
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+  </div> -->
+  <div class="container2 handler_wrap">
+    <div class="item_default"></div>
+    <div class="item_default"></div>
+    <div class="item_default"></div>
+    <div class="item_default"></div>
+    <div class="item_default"></div>
+    <div class="item_default"></div>
+    <div class="item_default"></div>
+    <div class="item_default"></div>
+    <div class="item_default"></div>
+    <div class="item_default"></div>
+    <div class="item_default"></div>
+    <div class="item_default"></div>
+    <div class="item_default"></div>
+    <div class="item_default"></div>
+    <div class="item_default"></div>
+    <div class="item_default"></div>
+  </div>
+  <div class="btns">
+    <button class="start">开始</button>
+    <span class="result">Game Over</span>
+  </div>
+  <script>
+    class Game {
+      $start = false
+      get start () { return this.$start }
+      set start (val) {
+        this.$start = val
+        this.end = false
+        this.score = 0
+        document.querySelector('.start').innerHTML = '重新开始'
+        document.querySelector('.result').setAttribute('style', `display: ${val ? 'block' : 'none' }`)
+        document.querySelector('.result').innerText = `${this.end ? 'Game Over ' : ''}score: ${this.score}`
+      }
+      $score = 0
+      get score () { return this.$score }
+      set score (val) {
+        this.$score = val
+        document.querySelector('.result').innerText = `${this.end ? 'Game Over ' : ''}score: ${val}`
+      }
+      end = false
+      content = null
+      constructor() {
+        this.init()
+      }
+      init() {
+        const domStart = document.querySelector('.start')
+        domStart.onclick = this.gameStart
+        document.querySelector('.result').setAttribute('style', 'display: none')
+      }
+      gameStart = () => {
+        this.start = true
+        this.content = new Content(this.setScore.bind(this), this.gameOver.bind(this))
+      }
+      setScore(val) {
+        this.score +=  val
+      }
+      gameOver() {
+        if(this.end) return
+        this.end = true
+        document.querySelector('.result').innerText = `${this.end ? 'Game Over ' : ''}score: ${this.score}`
+        setTimeout(() => {
+          alert(`Game Over!!! score: ${this.score}`)
+        }, 500)
+      }
+    }
+
+    class Content {
+      data = [
+        [0,0,0,0],
+        [0,0,0,0],
+        [0,0,0,0],
+        [0,0,0,0],
+      ]
+      availableItems = () => this.data.reduce((arr, line, i) => {
+        arr.push(...line.reduce((prev, cur, j) => {
+          cur || prev.push(i * 4 + j)
+          return prev
+          }, []))
+        return arr
+        }, [])
+      constructor(setScore, gameOver) {
+        this.init()
+        this.setScore = setScore
+        this.gameOver = gameOver
+      }
+      init() {
+        this.reset()
+        this.clear = this.handleMove()
+        // const line = Math.floor(Math.random() * 4) % 4
+        // const row = Math.floor(Math.random() * 4) % 4
+      }
+      handleMove() {
+        const wrap = document.querySelector('.handler_wrap')
+        let orgX = void 0
+        let orgY = void 0
+        const orgRecord = (e) => {
+          orgX = e.clientX
+          orgY = e.clientY
+        }
+        const realDirection = (e) => {
+          if(orgX === void 0 || orgY === void 0) return
+          if(Math.abs(orgX - e.clientX) < 10 && Math.abs(orgY - e.clientY) < 10) return
+          const direction = `${Math.abs(orgX - e.clientX) > Math.abs(orgY - e.clientY)
+            ? `${orgX > e.clientX ? 'left' : 'right'}_X`
+            : `${orgY > e.clientY ? 'up' : 'down'}_Y`
+          }`
+          this.moveEvent(direction)
+          orgX = void 0
+          orgY = void 0
+        }
+        const keyboaedDirection = (e) => {
+          const direction = {
+            37: 'left_X',
+            38: 'up_Y',
+            39: 'right_X',
+            40: 'down_Y'
+          }[e.keyCode]
+          this.moveEvent(direction)
+        }
+        const touchRecord = (e) => {
+          const { clientX, clientY } = e.touches[0]
+          orgX = clientX
+          orgY = clientY
+        }
+        const touchRealDirection = (e) => {
+          if(orgX === void 0 || orgY === void 0) return
+          const { clientX, clientY } = e.changedTouches[0]
+          if(Math.abs(orgX - clientX) < 10 && Math.abs(orgY - clientY) < 10) return
+          const direction = `${Math.abs(orgX - clientX) > Math.abs(orgY - clientY)
+            ? `${orgX > clientX ? 'left' : 'right'}_X`
+            : `${orgY > clientY ? 'up' : 'down'}_Y`
+          }`
+          this.moveEvent(direction)
+          orgX = void 0
+          orgY = void 0
+        }
+        // pc
+        wrap.addEventListener('mousedown', orgRecord)
+        document.addEventListener('mouseup', realDirection)
+        // mob
+        wrap.addEventListener('touchstart', touchRecord)
+        document.addEventListener('touchend', touchRealDirection)
+        // keyboard
+        document.addEventListener('keyup', keyboaedDirection)
+        return () => {
+          wrap.removeEventListener('mousedown', orgRecord)
+          document.removeEventListener('mouseup', realDirection)
+          wrap.removeEventListener('touchstart', touchRecord)
+          document.removeEventListener('touchend', touchRealDirection)
+          document.removeEventListener('keyup', keyboaedDirection)
+        }
+      }
+      async moveEvent(direction) {
+        let hasMove = false
+        let transData = JSON.parse(JSON.stringify(this.data))
+        const [dir, axis] = direction.split('_')
+        const transTmpObj = {}
+        const transDomObj = {}
+        transData.forEach((line, i) => line.forEach((item, j) => {
+          if (axis === 'X') {
+            // 横
+            let k = j + 1
+            while(k < 4 && !transData[i][k]) {
+              k++
+            }
+            if(k < 4 && item === transData[i][k]) {
+              hasMove = true
+              transData[i][j] = 2 * item
+              transData[i][k] = 0
+              transTmpObj[i * 4 + j] = [i * 4 + j, i * 4 + k]
+              this.setScore(item)
+            }
+          } else {
+            // 竖
+            let k = i + 1
+            while(k < 4 && !transData[k][j]) {
+              k++
+            }
+            if(k < 4 && item === transData[k][j]) {
+              hasMove = true
+              transData[i][j] = 2 * item
+              transData[k][j] = 0
+              transTmpObj[i * 4 + j] = [i * 4 + j, k * 4 + j]
+              this.setScore(item)
+            }
+          }
+        }))
+        transData = transData.map(
+          (line, i) => line.map(
+            (item, j) => {
+              return {
+                left: () => {
+                  if(item) {
+                    const data = line.reduce((prev, cur, k) => ((!cur && k < j && prev++), prev), 0)
+                    transTmpObj[4*i+j]?.forEach((ind) => transDomObj[ind] = 4*i+j - data) || (transDomObj[4*i+j] = 4*i+j - data)
+                  }
+                  return line.filter(e => e)[j]
+                },
+                right: () => {
+                  if(item) {
+                    const data = line.reduce((prev, cur, k) => ((!cur && k > j && prev++), prev), 0)
+                    transTmpObj[4*i+j]?.forEach((ind) => transDomObj[ind] = 4*i+j + data) || (transDomObj[4*i+j] = 4*i+j + data)
+                  }
+                  return [...Array(4).fill(0), ...line.filter(e => e)].slice(-4)[j]
+                },
+                up: () => {
+                  if(item) {
+                    const data = transData.map(line => line[j]).reduce((prev, cur, k) => ((!cur && k < i && prev++), prev), 0)
+                    transTmpObj[4*i+j]?.forEach((ind) => transDomObj[ind] = 4*i+j - 4 * data) || (transDomObj[4*i+j] = 4*i+j - 4 * data)
+                  }
+                  return transData.map(line => line[j]).filter(e => e)[i]
+                },
+                down: () => {
+                  if(item) {
+                    const data = transData.map(line => line[j]).reduce((prev, cur, k) => ((!cur && k > i && prev++), prev), 0)
+                    transTmpObj[4*i+j]?.forEach((ind) => transDomObj[ind] = 4*i+j + 4 * data) || (transDomObj[4*i+j] = 4*i+j + 4 * data)
+                  }
+                  return [...Array(4).fill(0), ...transData.map(line => line[j]).filter(e => e)].slice(-4)[i]
+                },
+              }[dir]() || 0
+            }
+          )
+        )
+        transData.map(
+          (line, i) => line.map((item, j) => item !== this.data[i][j] && (hasMove = true))
+        )
+        // console.log(transData)
+        if(hasMove) {
+          this.slideAnimation(transDomObj, transData)
+          this.data = transData
+          this.InsertNum(Math.random() > 0.2 ? 2: 4)
+          await new Promise(res => {
+            setTimeout(() => {
+              this.render()
+              res()
+            }, 300)
+          })
+        }
+        if(this.isGameOver()) {
+          this.gameOver()
+          this.clear()
+        }
+      }
+      slideAnimation(targetObj, data) {
+        var animations = document.querySelectorAll('.item2')
+        Array.from(animations).forEach(dom => {
+          const j = Math.floor(parseInt(dom.style.left) / 68)
+          const i = Math.floor(parseInt(dom.style.top) / 68)
+          dom.setAttribute('style', `left: ${(targetObj[4*i+j] % 4) * 68}px;top: ${Math.floor(targetObj[4*i+j] / 4) * 68}px;`)
+          dom.setAttribute('class', `item2 score_${data[Math.floor(targetObj[4*i+j] / 4)][targetObj[4*i+j] % 4]}`)
+        })
+      }
+      isGameOver() {
+        // 判断空格填满
+        // 横竖各不相同
+        return !this.data.filter((line, i) => line.some((item, j) => 
+          // !(全部有值 && 前三行的每个值和右方，下方值不一致)
+          !(item && (j >= 3 || this.data[i][j+1] !== item) && (i >= 3 || this.data[i+1][j] !== item))
+        )).length
+      }
+      render() {
+        const wrap1 = document.querySelector('.container')
+        if(wrap1){
+          document.querySelector('.container').innerHTML = `${
+            this.data.map(line => 
+              line.map(item => 
+                `<div class="item${item ? ` score_${item}` : ''}">${item || ''}</div>`
+              ).join('\n')
+            ).join('\n')
+          }`
+        }
+        const wrap2 = document.querySelector('.container2')
+        if(wrap2) {
+          document.querySelector('.container2').innerHTML = `
+          ${Array(16).fill().map(_ => '<div class="item_default"></div>').join('\n')}
+          ${
+            this.data.map((line, i) => 
+              line.map((item, j) => 
+                item ? `<div class="item2${item ? ` score_${item}` : ''}" style="left: ${j * 68}px;top: ${i * 68}px;">${item || ''}</div>\n` : ''
+              ).join('')
+            ).join('')
+          }`
+        }
+      }
+      InsertNum(num = 2) {
+        if(!this.data.filter(line => line.some(item => !item)).length) return
+        const available = this.availableItems()
+        const result = available[Math.floor(Math.random() * available.length) % available.length]
+        this.data[Math.floor(result / 4)][result % 4] = num
+      }
+      reset() {
+        this.data = [
+          [0,0,0,0],
+          [0,0,0,0],
+          [0,0,0,0],
+          [0,0,0,0],
+        ]
+        this.InsertNum(Math.random() > 0.5 ? 2: 4)
+        this.InsertNum(Math.random() > 0.5 ? 2: 4)
+        this.render()
+      }
+    }
+
+    new Game()
+  </script>
+</body>
+</html>
