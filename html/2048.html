@@ -263,10 +263,12 @@
         let orgX = void 0
         let orgY = void 0
         const orgRecord = (e) => {
+          e.preventDefault()
           orgX = e.clientX
           orgY = e.clientY
         }
         const realDirection = (e) => {
+          e.preventDefault()
           if(orgX === void 0 || orgY === void 0) return
           if(Math.abs(orgX - e.clientX) < 10 && Math.abs(orgY - e.clientY) < 10) return
           const direction = `${Math.abs(orgX - e.clientX) > Math.abs(orgY - e.clientY)
@@ -278,6 +280,7 @@
           orgY = void 0
         }
         const keyboaedDirection = (e) => {
+          e.preventDefault()
           const direction = {
             37: 'left_X',
             38: 'up_Y',
@@ -287,11 +290,13 @@
           this.moveEvent(direction)
         }
         const touchRecord = (e) => {
+          e.preventDefault()
           const { clientX, clientY } = e.touches[0]
           orgX = clientX
           orgY = clientY
         }
         const touchRealDirection = (e) => {
+          e.preventDefault()
           if(orgX === void 0 || orgY === void 0) return
           const { clientX, clientY } = e.changedTouches[0]
           if(Math.abs(orgX - clientX) < 10 && Math.abs(orgY - clientY) < 10) return
