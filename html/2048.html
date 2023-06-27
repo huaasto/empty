@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
+<!-- saved from url=(0036)https://empty.t-n.top/html/2048.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
@@ -198,9 +198,13 @@
   </div>
   <div class="btns">
     <button class="start">开始</button>
-    <span class="result">Game Over</span>
+    <span class="result" style="display: none">Game Over</span>
   </div>
   <!-- <script>
+    function isMobile() {
+      let flag = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      return flag;
+    }
     class Game {
       $start = false
       get start () { return this.$start }
@@ -224,12 +228,18 @@
         this.init()
       }
       init() {
-        const domStart = document.querySelector('.start')
-        domStart.onclick = this.gameStart
+        const domStart = document.getElementsByClassName('start')[0]
+        if(isMobile()) {
+          domStart.ontouchend = this.gameStart
+          // domStart.addEventListener('touch', this.gameStart)
+        } else {
+          domStart.onclick = this.gameStart
+        }
         document.querySelector('.result').setAttribute('style', 'display: none')
       }
       gameStart = () => {
         this.start = true
+        this.content?.clear()
         this.content = new Content(this.setScore.bind(this), this.gameOver.bind(this))
       }
       setScore(val) {
@@ -260,12 +270,14 @@
         return arr
         }, [])
       constructor(setScore, gameOver) {
-        this.init()
         this.setScore = setScore
         this.gameOver = gameOver
+        this.clear = () => {}
+        this.init()
       }
       init() {
         this.reset()
+        this.clear()
         this.clear = this.handleMove()
         // const line = Math.floor(Math.random() * 4) % 4
         // const row = Math.floor(Math.random() * 4) % 4
@@ -410,7 +422,6 @@
         transData.map(
           (line, i) => line.map((item, j) => item !== this.data[i][j] && (hasMove = true))
         )
-        // console.log(transData)
         if(hasMove) {
           this.slideAnimation(transDomObj, transData)
           this.data = transData
@@ -432,8 +443,11 @@
         Array.from(animations).forEach(dom => {
           const j = Math.floor(parseInt(dom.style.left) / 68)
           const i = Math.floor(parseInt(dom.style.top) / 68)
-          dom.setAttribute('style', `left: ${(targetObj[4*i+j] % 4) * 68}px;top: ${Math.floor(targetObj[4*i+j] / 4) * 68}px;`)
-          dom.setAttribute('class', `item2 score_${data[Math.floor(targetObj[4*i+j] / 4)][targetObj[4*i+j] % 4]}`)
+          const objTarget = targetObj[4*i+j]
+          const curscore = data[Math.floor(objTarget / 4)][objTarget % 4]
+          dom.setAttribute('style', `left: ${(objTarget % 4) * 68}px;top: ${Math.floor(objTarget / 4) * 68}px;`)
+          dom.setAttribute('class', `item2 score_${curscore}`)
+
         })
       }
       isGameOver() {
@@ -492,450 +506,401 @@
   <script>
     "use strict";
 
-function _instanceof(left, right) { if (right != null && typeof Symbol !== "undefined" && right[Symbol.hasInstance]) { return !!right[Symbol.hasInstance](left); } else { return left instanceof right; } }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _classCallCheck(instance, Constructor) { if (!_instanceof(instance, Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var Game = /*#__PURE__*/function () {
-  function Game() {
-    var _this = this;
-
-    _classCallCheck(this, Game);
-
-    _defineProperty(this, "$start", false);
-
-    _defineProperty(this, "$score", 0);
-
-    _defineProperty(this, "end", false);
-
-    _defineProperty(this, "content", null);
-
-    _defineProperty(this, "gameStart", function () {
-      _this.start = true;
-      _this.content = new Content(_this.setScore.bind(_this), _this.gameOver.bind(_this));
-    });
-
-    this.init();
-  }
-
-  _createClass(Game, [{
-    key: "start",
-    get: function get() {
-      return this.$start;
-    },
-    set: function set(val) {
-      this.$start = val;
-      this.end = false;
-      this.score = 0;
-      document.querySelector('.start').innerHTML = '重新开始';
-      document.querySelector('.result').setAttribute('style', "display: ".concat(val ? 'block' : 'none'));
-      document.querySelector('.result').innerText = "".concat(this.end ? 'Game Over ' : '', "score: ").concat(this.score);
+    function _instanceof(left, right) { if (right != null && typeof Symbol !== "undefined" && right[Symbol.hasInstance]) { return !!right[Symbol.hasInstance](left); } else { return left instanceof right; } }
+    function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+    function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+    function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+    function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i.return && (_r = _i.return(), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+    function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+    function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+    function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+    function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+    function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+    function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+    function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+    function _classCallCheck(instance, Constructor) { if (!_instanceof(instance, Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+    function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+    function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+    function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+    function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+    function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+    function isMobile() {
+      var flag = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      return flag;
     }
-  }, {
-    key: "score",
-    get: function get() {
-      return this.$score;
-    },
-    set: function set(val) {
-      this.$score = val;
-      document.querySelector('.result').innerText = "".concat(this.end ? 'Game Over ' : '', "score: ").concat(val);
-    }
-  }, {
-    key: "init",
-    value: function init() {
-      var domStart = document.querySelector('.start');
-      domStart.onclick = this.gameStart;
-      document.querySelector('.result').setAttribute('style', 'display: none');
-    }
-  }, {
-    key: "setScore",
-    value: function setScore(val) {
-      this.score += val;
-    }
-  }, {
-    key: "gameOver",
-    value: function gameOver() {
-      var _this2 = this;
-
-      if (this.end) return;
-      this.end = true;
-      document.querySelector('.result').innerText = "".concat(this.end ? 'Game Over ' : '', "score: ").concat(this.score);
-      setTimeout(function () {
-        alert("Game Over!!! score: ".concat(_this2.score));
-      }, 500);
-    }
-  }]);
-
-  return Game;
-}();
-
-var Content = /*#__PURE__*/function () {
-  function Content(setScore, gameOver) {
-    var _this3 = this;
-
-    _classCallCheck(this, Content);
-
-    _defineProperty(this, "data", [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]);
-
-    _defineProperty(this, "availableItems", function () {
-      return _this3.data.reduce(function (arr, line, i) {
-        arr.push.apply(arr, _toConsumableArray(line.reduce(function (prev, cur, j) {
-          cur || prev.push(i * 4 + j);
-          return prev;
-        }, [])));
-        return arr;
-      }, []);
-    });
-
-    this.init();
-    this.setScore = setScore;
-    this.gameOver = gameOver;
-  }
-
-  _createClass(Content, [{
-    key: "init",
-    value: function init() {
-      this.reset();
-      this.clear = this.handleMove(); // const line = Math.floor(Math.random() * 4) % 4
-      // const row = Math.floor(Math.random() * 4) % 4
-    }
-  }, {
-    key: "handleMove",
-    value: function handleMove() {
-      var _this4 = this;
-
-      var wrap = document.querySelector('.handler_wrap');
-      var orgX = void 0;
-      var orgY = void 0;
-
-      var orgRecord = function orgRecord(e) {
-        e.preventDefault();
-        orgX = e.clientX;
-        orgY = e.clientY;
-      };
-
-      var realDirection = function realDirection(e) {
-        e.preventDefault();
-        if (orgX === void 0 || orgY === void 0) return;
-        if (Math.abs(orgX - e.clientX) < 10 && Math.abs(orgY - e.clientY) < 10) return;
-        var direction = "".concat(Math.abs(orgX - e.clientX) > Math.abs(orgY - e.clientY) ? "".concat(orgX > e.clientX ? 'left' : 'right', "_X") : "".concat(orgY > e.clientY ? 'up' : 'down', "_Y"));
-
-        _this4.moveEvent(direction);
-
-        orgX = void 0;
-        orgY = void 0;
-      };
-
-      var keyboaedDirection = function keyboaedDirection(e) {
-        e.preventDefault();
-        var direction = {
-          37: 'left_X',
-          38: 'up_Y',
-          39: 'right_X',
-          40: 'down_Y'
-        }[e.keyCode];
-
-        _this4.moveEvent(direction);
-      };
-
-      var touchRecord = function touchRecord(e) {
-        e.preventDefault();
-        var _e$touches$ = e.touches[0],
-            clientX = _e$touches$.clientX,
-            clientY = _e$touches$.clientY;
-        orgX = clientX;
-        orgY = clientY;
-      };
-
-      var touchRealDirection = function touchRealDirection(e) {
-        e.preventDefault();
-        if (orgX === void 0 || orgY === void 0) return;
-        var _e$changedTouches$ = e.changedTouches[0],
-            clientX = _e$changedTouches$.clientX,
-            clientY = _e$changedTouches$.clientY;
-        if (Math.abs(orgX - clientX) < 10 && Math.abs(orgY - clientY) < 10) return;
-        var direction = "".concat(Math.abs(orgX - clientX) > Math.abs(orgY - clientY) ? "".concat(orgX > clientX ? 'left' : 'right', "_X") : "".concat(orgY > clientY ? 'up' : 'down', "_Y"));
-
-        _this4.moveEvent(direction);
-
-        orgX = void 0;
-        orgY = void 0;
-      }; // pc
-
-
-      wrap.addEventListener('mousedown', orgRecord);
-      document.addEventListener('mouseup', realDirection); // mob
-
-      wrap.addEventListener('touchstart', touchRecord);
-      document.addEventListener('touchend', touchRealDirection); // keyboard
-
-      document.addEventListener('keyup', keyboaedDirection);
-      return function () {
-        wrap.removeEventListener('mousedown', orgRecord);
-        document.removeEventListener('mouseup', realDirection);
-        wrap.removeEventListener('touchstart', touchRecord);
-        document.removeEventListener('touchend', touchRealDirection);
-        document.removeEventListener('keyup', keyboaedDirection);
-      };
-    }
-  }, {
-    key: "moveEvent",
-    value: async function moveEvent(direction) {
-      var _this5 = this;
-
-      var hasMove = false;
-      var transData = JSON.parse(JSON.stringify(this.data));
-
-      var _direction$split = direction.split('_'),
-          _direction$split2 = _slicedToArray(_direction$split, 2),
-          dir = _direction$split2[0],
-          axis = _direction$split2[1];
-
-      var transTmpObj = {};
-      var transDomObj = {};
-      transData.forEach(function (line, i) {
-        return line.forEach(function (item, j) {
-          if (axis === 'X') {
-            // 横
-            var k = j + 1;
-
-            while (k < 4 && !transData[i][k]) {
-              k++;
-            }
-
-            if (k < 4 && item === transData[i][k]) {
-              hasMove = true;
-              transData[i][j] = 2 * item;
-              transData[i][k] = 0;
-              transTmpObj[i * 4 + j] = [i * 4 + j, i * 4 + k];
-
-              _this5.setScore(item);
-            }
+    var Game = /*#__PURE__*/function () {
+      function Game() {
+        var _this = this;
+        _classCallCheck(this, Game);
+        _defineProperty(this, "$start", false);
+        _defineProperty(this, "$score", 0);
+        _defineProperty(this, "end", false);
+        _defineProperty(this, "content", null);
+        _defineProperty(this, "gameStart", function () {
+          var _this$content;
+          _this.start = true;
+          (_this$content = _this.content) === null || _this$content === void 0 ? void 0 : _this$content.clear();
+          _this.content = new Content(_this.setScore.bind(_this), _this.gameOver.bind(_this));
+        });
+        this.init();
+      }
+      _createClass(Game, [{
+        key: "start",
+        get: function get() {
+          return this.$start;
+        },
+        set: function set(val) {
+          this.$start = val;
+          this.end = false;
+          this.score = 0;
+          document.querySelector('.start').innerHTML = '重新开始';
+          document.querySelector('.result').setAttribute('style', "display: ".concat(val ? 'block' : 'none'));
+          document.querySelector('.result').innerText = "".concat(this.end ? 'Game Over ' : '', "score: ").concat(this.score);
+        }
+      }, {
+        key: "score",
+        get: function get() {
+          return this.$score;
+        },
+        set: function set(val) {
+          this.$score = val;
+          document.querySelector('.result').innerText = "".concat(this.end ? 'Game Over ' : '', "score: ").concat(val);
+        }
+      }, {
+        key: "init",
+        value: function init() {
+          var domStart = document.getElementsByClassName('start')[0];
+          if (isMobile()) {
+            domStart.ontouchend = this.gameStart;
+            // domStart.addEventListener('touch', this.gameStart)
           } else {
-            // 竖
-            var _k = i + 1;
-
-            while (_k < 4 && !transData[_k][j]) {
-              _k++;
-            }
-
-            if (_k < 4 && item === transData[_k][j]) {
-              hasMove = true;
-              transData[i][j] = 2 * item;
-              transData[_k][j] = 0;
-              transTmpObj[i * 4 + j] = [i * 4 + j, _k * 4 + j];
-
-              _this5.setScore(item);
-            }
+            domStart.onclick = this.gameStart;
           }
-        });
-      });
-      transData = transData.map(function (line, i) {
-        return line.map(function (item, j) {
-          return {
-            left: function left() {
-              if (item) {
-                var _transTmpObj;
-
-                var data = line.reduce(function (prev, cur, k) {
-                  return !cur && k < j && prev++, prev;
-                }, 0);
-                ((_transTmpObj = transTmpObj[4 * i + j]) === null || _transTmpObj === void 0 ? void 0 : _transTmpObj.forEach(function (ind) {
-                  return transDomObj[ind] = 4 * i + j - data;
-                })) || (transDomObj[4 * i + j] = 4 * i + j - data);
-              }
-
-              return line.filter(function (e) {
-                return e;
-              })[j];
-            },
-            right: function right() {
-              if (item) {
-                var _transTmpObj2;
-
-                var data = line.reduce(function (prev, cur, k) {
-                  return !cur && k > j && prev++, prev;
-                }, 0);
-                ((_transTmpObj2 = transTmpObj[4 * i + j]) === null || _transTmpObj2 === void 0 ? void 0 : _transTmpObj2.forEach(function (ind) {
-                  return transDomObj[ind] = 4 * i + j + data;
-                })) || (transDomObj[4 * i + j] = 4 * i + j + data);
-              }
-
-              return [].concat(_toConsumableArray(Array(4).fill(0)), _toConsumableArray(line.filter(function (e) {
-                return e;
-              }))).slice(-4)[j];
-            },
-            up: function up() {
-              if (item) {
-                var _transTmpObj3;
-
-                var data = transData.map(function (line) {
-                  return line[j];
-                }).reduce(function (prev, cur, k) {
-                  return !cur && k < i && prev++, prev;
-                }, 0);
-                ((_transTmpObj3 = transTmpObj[4 * i + j]) === null || _transTmpObj3 === void 0 ? void 0 : _transTmpObj3.forEach(function (ind) {
-                  return transDomObj[ind] = 4 * i + j - 4 * data;
-                })) || (transDomObj[4 * i + j] = 4 * i + j - 4 * data);
-              }
-
-              return transData.map(function (line) {
-                return line[j];
-              }).filter(function (e) {
-                return e;
-              })[i];
-            },
-            down: function down() {
-              if (item) {
-                var _transTmpObj4;
-
-                var data = transData.map(function (line) {
-                  return line[j];
-                }).reduce(function (prev, cur, k) {
-                  return !cur && k > i && prev++, prev;
-                }, 0);
-                ((_transTmpObj4 = transTmpObj[4 * i + j]) === null || _transTmpObj4 === void 0 ? void 0 : _transTmpObj4.forEach(function (ind) {
-                  return transDomObj[ind] = 4 * i + j + 4 * data;
-                })) || (transDomObj[4 * i + j] = 4 * i + j + 4 * data);
-              }
-
-              return [].concat(_toConsumableArray(Array(4).fill(0)), _toConsumableArray(transData.map(function (line) {
-                return line[j];
-              }).filter(function (e) {
-                return e;
-              }))).slice(-4)[i];
-            }
-          }[dir]() || 0;
-        });
-      });
-      transData.map(function (line, i) {
-        return line.map(function (item, j) {
-          return item !== _this5.data[i][j] && (hasMove = true);
-        });
-      }); // console.log(transData)
-
-      if (hasMove) {
-        this.slideAnimation(transDomObj, transData);
-        this.data = transData;
-        this.InsertNum(Math.random() > 0.2 ? 2 : 4);
-        await new Promise(function (res) {
+          document.querySelector('.result').setAttribute('style', 'display: none');
+        }
+      }, {
+        key: "setScore",
+        value: function setScore(val) {
+          this.score += val;
+        }
+      }, {
+        key: "gameOver",
+        value: function gameOver() {
+          var _this2 = this;
+          if (this.end) return;
+          this.end = true;
+          document.querySelector('.result').innerText = "".concat(this.end ? 'Game Over ' : '', "score: ").concat(this.score);
           setTimeout(function () {
-            _this5.render();
-
-            res();
-          }, 300);
+            alert("Game Over!!! score: ".concat(_this2.score));
+          }, 500);
+        }
+      }]);
+      return Game;
+    }();
+    var Content = /*#__PURE__*/function () {
+      function Content(setScore, gameOver) {
+        var _this3 = this;
+        _classCallCheck(this, Content);
+        _defineProperty(this, "data", [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]);
+        _defineProperty(this, "availableItems", function () {
+          return _this3.data.reduce(function (arr, line, i) {
+            arr.push.apply(arr, _toConsumableArray(line.reduce(function (prev, cur, j) {
+              cur || prev.push(i * 4 + j);
+              return prev;
+            }, [])));
+            return arr;
+          }, []);
         });
+        this.setScore = setScore;
+        this.gameOver = gameOver;
+        this.clear = function () {};
+        this.init();
       }
-
-      if (this.isGameOver()) {
-        this.gameOver();
-        this.clear();
-      }
-    }
-  }, {
-    key: "slideAnimation",
-    value: function slideAnimation(targetObj, data) {
-      var animations = document.querySelectorAll('.item2');
-      Array.from(animations).forEach(function (dom) {
-        var j = Math.floor(parseInt(dom.style.left) / 68);
-        var i = Math.floor(parseInt(dom.style.top) / 68);
-        dom.setAttribute('style', "left: ".concat(targetObj[4 * i + j] % 4 * 68, "px;top: ").concat(Math.floor(targetObj[4 * i + j] / 4) * 68, "px;"));
-        dom.setAttribute('class', "item2 score_".concat(data[Math.floor(targetObj[4 * i + j] / 4)][targetObj[4 * i + j] % 4]));
-      });
-    }
-  }, {
-    key: "isGameOver",
-    value: function isGameOver() {
-      var _this6 = this;
-
-      // 判断空格填满
-      // 横竖各不相同
-      return !this.data.filter(function (line, i) {
-        return line.some(function (item, j) {
-          return (// !(全部有值 && 前三行的每个值和右方，下方值不一致)
-            !(item && (j >= 3 || _this6.data[i][j + 1] !== item) && (i >= 3 || _this6.data[i + 1][j] !== item))
-          );
-        });
-      }).length;
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var wrap1 = document.querySelector('.container');
-
-      if (wrap1) {
-        document.querySelector('.container').innerHTML = "".concat(this.data.map(function (line) {
-          return line.map(function (item) {
-            return "<div class=\"item".concat(item ? " score_".concat(item) : '', "\">").concat(item || '', "</div>");
-          }).join('\n');
-        }).join('\n'));
-      }
-
-      var wrap2 = document.querySelector('.container2');
-
-      if (wrap2) {
-        document.querySelector('.container2').innerHTML = "\n          ".concat(Array(16).fill().map(function (_) {
-          return '<div class="item_default"></div>';
-        }).join('\n'), "\n          ").concat(this.data.map(function (line, i) {
-          return line.map(function (item, j) {
-            return item ? "<div class=\"item2".concat(item ? " score_".concat(item) : '', "\" style=\"left: ").concat(j * 68, "px;top: ").concat(i * 68, "px;\">").concat(item || '', "</div>\n") : '';
-          }).join('');
-        }).join(''));
-      }
-    }
-  }, {
-    key: "InsertNum",
-    value: function InsertNum() {
-      var num = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 2;
-      if (!this.data.filter(function (line) {
-        return line.some(function (item) {
-          return !item;
-        });
-      }).length) return;
-      var available = this.availableItems();
-      var result = available[Math.floor(Math.random() * available.length) % available.length];
-      this.data[Math.floor(result / 4)][result % 4] = num;
-    }
-  }, {
-    key: "reset",
-    value: function reset() {
-      this.data = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
-      this.InsertNum(Math.random() > 0.5 ? 2 : 4);
-      this.InsertNum(Math.random() > 0.5 ? 2 : 4);
-      this.render();
-    }
-  }]);
-
-  return Content;
-}();
-
-new Game();
+      _createClass(Content, [{
+        key: "init",
+        value: function init() {
+          this.reset();
+          this.clear();
+          this.clear = this.handleMove();
+          // const line = Math.floor(Math.random() * 4) % 4
+          // const row = Math.floor(Math.random() * 4) % 4
+        }
+      }, {
+        key: "handleMove",
+        value: function handleMove() {
+          var _this4 = this;
+          var wrap = document.querySelector('.handler_wrap');
+          var orgX = void 0;
+          var orgY = void 0;
+          var orgRecord = function orgRecord(e) {
+            e.preventDefault();
+            orgX = e.clientX;
+            orgY = e.clientY;
+          };
+          var realDirection = function realDirection(e) {
+            e.preventDefault();
+            if (orgX === void 0 || orgY === void 0) return;
+            if (Math.abs(orgX - e.clientX) < 10 && Math.abs(orgY - e.clientY) < 10) return;
+            var direction = "".concat(Math.abs(orgX - e.clientX) > Math.abs(orgY - e.clientY) ? "".concat(orgX > e.clientX ? 'left' : 'right', "_X") : "".concat(orgY > e.clientY ? 'up' : 'down', "_Y"));
+            _this4.moveEvent(direction);
+            orgX = void 0;
+            orgY = void 0;
+          };
+          var keyboaedDirection = function keyboaedDirection(e) {
+            e.preventDefault();
+            var direction = {
+              37: 'left_X',
+              38: 'up_Y',
+              39: 'right_X',
+              40: 'down_Y'
+            }[e.keyCode];
+            _this4.moveEvent(direction);
+          };
+          var touchRecord = function touchRecord(e) {
+            e.preventDefault();
+            var _e$touches$ = e.touches[0],
+              clientX = _e$touches$.clientX,
+              clientY = _e$touches$.clientY;
+            orgX = clientX;
+            orgY = clientY;
+          };
+          var touchRealDirection = function touchRealDirection(e) {
+            e.preventDefault();
+            if (orgX === void 0 || orgY === void 0) return;
+            var _e$changedTouches$ = e.changedTouches[0],
+              clientX = _e$changedTouches$.clientX,
+              clientY = _e$changedTouches$.clientY;
+            if (Math.abs(orgX - clientX) < 10 && Math.abs(orgY - clientY) < 10) return;
+            var direction = "".concat(Math.abs(orgX - clientX) > Math.abs(orgY - clientY) ? "".concat(orgX > clientX ? 'left' : 'right', "_X") : "".concat(orgY > clientY ? 'up' : 'down', "_Y"));
+            _this4.moveEvent(direction);
+            orgX = void 0;
+            orgY = void 0;
+          };
+          // pc
+          wrap.addEventListener('mousedown', orgRecord);
+          document.addEventListener('mouseup', realDirection);
+          // mob
+          wrap.addEventListener('touchstart', touchRecord);
+          document.addEventListener('touchend', touchRealDirection);
+          // keyboard
+          document.addEventListener('keyup', keyboaedDirection);
+          return function () {
+            wrap.removeEventListener('mousedown', orgRecord);
+            document.removeEventListener('mouseup', realDirection);
+            wrap.removeEventListener('touchstart', touchRecord);
+            document.removeEventListener('touchend', touchRealDirection);
+            document.removeEventListener('keyup', keyboaedDirection);
+          };
+        }
+      }, {
+        key: "moveEvent",
+        value: async function moveEvent(direction) {
+          var _this5 = this;
+          var hasMove = false;
+          var transData = JSON.parse(JSON.stringify(this.data));
+          var _direction$split = direction.split('_'),
+            _direction$split2 = _slicedToArray(_direction$split, 2),
+            dir = _direction$split2[0],
+            axis = _direction$split2[1];
+          var transTmpObj = {};
+          var transDomObj = {};
+          transData.forEach(function (line, i) {
+            return line.forEach(function (item, j) {
+              if (axis === 'X') {
+                // 横
+                var k = j + 1;
+                while (k < 4 && !transData[i][k]) {
+                  k++;
+                }
+                if (k < 4 && item === transData[i][k]) {
+                  hasMove = true;
+                  transData[i][j] = 2 * item;
+                  transData[i][k] = 0;
+                  transTmpObj[i * 4 + j] = [i * 4 + j, i * 4 + k];
+                  _this5.setScore(item);
+                }
+              } else {
+                // 竖
+                var _k = i + 1;
+                while (_k < 4 && !transData[_k][j]) {
+                  _k++;
+                }
+                if (_k < 4 && item === transData[_k][j]) {
+                  hasMove = true;
+                  transData[i][j] = 2 * item;
+                  transData[_k][j] = 0;
+                  transTmpObj[i * 4 + j] = [i * 4 + j, _k * 4 + j];
+                  _this5.setScore(item);
+                }
+              }
+            });
+          });
+          transData = transData.map(function (line, i) {
+            return line.map(function (item, j) {
+              return {
+                left: function left() {
+                  if (item) {
+                    var _transTmpObj;
+                    var data = line.reduce(function (prev, cur, k) {
+                      return !cur && k < j && prev++, prev;
+                    }, 0);
+                    ((_transTmpObj = transTmpObj[4 * i + j]) === null || _transTmpObj === void 0 ? void 0 : _transTmpObj.forEach(function (ind) {
+                      return transDomObj[ind] = 4 * i + j - data;
+                    })) || (transDomObj[4 * i + j] = 4 * i + j - data);
+                  }
+                  return line.filter(function (e) {
+                    return e;
+                  })[j];
+                },
+                right: function right() {
+                  if (item) {
+                    var _transTmpObj2;
+                    var data = line.reduce(function (prev, cur, k) {
+                      return !cur && k > j && prev++, prev;
+                    }, 0);
+                    ((_transTmpObj2 = transTmpObj[4 * i + j]) === null || _transTmpObj2 === void 0 ? void 0 : _transTmpObj2.forEach(function (ind) {
+                      return transDomObj[ind] = 4 * i + j + data;
+                    })) || (transDomObj[4 * i + j] = 4 * i + j + data);
+                  }
+                  return [].concat(_toConsumableArray(Array(4).fill(0)), _toConsumableArray(line.filter(function (e) {
+                    return e;
+                  }))).slice(-4)[j];
+                },
+                up: function up() {
+                  if (item) {
+                    var _transTmpObj3;
+                    var data = transData.map(function (line) {
+                      return line[j];
+                    }).reduce(function (prev, cur, k) {
+                      return !cur && k < i && prev++, prev;
+                    }, 0);
+                    ((_transTmpObj3 = transTmpObj[4 * i + j]) === null || _transTmpObj3 === void 0 ? void 0 : _transTmpObj3.forEach(function (ind) {
+                      return transDomObj[ind] = 4 * i + j - 4 * data;
+                    })) || (transDomObj[4 * i + j] = 4 * i + j - 4 * data);
+                  }
+                  return transData.map(function (line) {
+                    return line[j];
+                  }).filter(function (e) {
+                    return e;
+                  })[i];
+                },
+                down: function down() {
+                  if (item) {
+                    var _transTmpObj4;
+                    var data = transData.map(function (line) {
+                      return line[j];
+                    }).reduce(function (prev, cur, k) {
+                      return !cur && k > i && prev++, prev;
+                    }, 0);
+                    ((_transTmpObj4 = transTmpObj[4 * i + j]) === null || _transTmpObj4 === void 0 ? void 0 : _transTmpObj4.forEach(function (ind) {
+                      return transDomObj[ind] = 4 * i + j + 4 * data;
+                    })) || (transDomObj[4 * i + j] = 4 * i + j + 4 * data);
+                  }
+                  return [].concat(_toConsumableArray(Array(4).fill(0)), _toConsumableArray(transData.map(function (line) {
+                    return line[j];
+                  }).filter(function (e) {
+                    return e;
+                  }))).slice(-4)[i];
+                }
+              }[dir]() || 0;
+            });
+          });
+          transData.map(function (line, i) {
+            return line.map(function (item, j) {
+              return item !== _this5.data[i][j] && (hasMove = true);
+            });
+          });
+          if (hasMove) {
+            this.slideAnimation(transDomObj, transData);
+            this.data = transData;
+            this.InsertNum(Math.random() > 0.2 ? 2 : 4);
+            await new Promise(function (res) {
+              setTimeout(function () {
+                _this5.render();
+                res();
+              }, 300);
+            });
+          }
+          if (this.isGameOver()) {
+            this.gameOver();
+            this.clear();
+          }
+        }
+      }, {
+        key: "slideAnimation",
+        value: function slideAnimation(targetObj, data) {
+          var animations = document.querySelectorAll('.item2');
+          Array.from(animations).forEach(function (dom) {
+            var j = Math.floor(parseInt(dom.style.left) / 68);
+            var i = Math.floor(parseInt(dom.style.top) / 68);
+            var objTarget = targetObj[4 * i + j];
+            var curscore = data[Math.floor(objTarget / 4)][objTarget % 4];
+            dom.setAttribute('style', "left: ".concat(objTarget % 4 * 68, "px;top: ").concat(Math.floor(objTarget / 4) * 68, "px;"));
+            dom.setAttribute('class', "item2 score_".concat(curscore));
+          });
+        }
+      }, {
+        key: "isGameOver",
+        value: function isGameOver() {
+          var _this6 = this;
+          // 判断空格填满
+          // 横竖各不相同
+          return !this.data.filter(function (line, i) {
+            return line.some(function (item, j) {
+              return (
+                // !(全部有值 && 前三行的每个值和右方，下方值不一致)
+                !(item && (j >= 3 || _this6.data[i][j + 1] !== item) && (i >= 3 || _this6.data[i + 1][j] !== item))
+              );
+            });
+          }).length;
+        }
+      }, {
+        key: "render",
+        value: function render() {
+          var wrap1 = document.querySelector('.container');
+          if (wrap1) {
+            document.querySelector('.container').innerHTML = "".concat(this.data.map(function (line) {
+              return line.map(function (item) {
+                return "<div class=\"item".concat(item ? " score_".concat(item) : '', "\">").concat(item || '', "</div>");
+              }).join('\n');
+            }).join('\n'));
+          }
+          var wrap2 = document.querySelector('.container2');
+          if (wrap2) {
+            document.querySelector('.container2').innerHTML = "\n          ".concat(Array(16).fill().map(function (_) {
+              return '<div class="item_default"></div>';
+            }).join('\n'), "\n          ").concat(this.data.map(function (line, i) {
+              return line.map(function (item, j) {
+                return item ? "<div class=\"item2".concat(item ? " score_".concat(item) : '', "\" style=\"left: ").concat(j * 68, "px;top: ").concat(i * 68, "px;\">").concat(item || '', "</div>\n") : '';
+              }).join('');
+            }).join(''));
+          }
+        }
+      }, {
+        key: "InsertNum",
+        value: function InsertNum() {
+          var num = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 2;
+          if (!this.data.filter(function (line) {
+            return line.some(function (item) {
+              return !item;
+            });
+          }).length) return;
+          var available = this.availableItems();
+          var result = available[Math.floor(Math.random() * available.length) % available.length];
+          this.data[Math.floor(result / 4)][result % 4] = num;
+        }
+      }, {
+        key: "reset",
+        value: function reset() {
+          this.data = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
+          this.InsertNum(Math.random() > 0.5 ? 2 : 4);
+          this.InsertNum(Math.random() > 0.5 ? 2 : 4);
+          this.render();
+        }
+      }]);
+      return Content;
+    }();
+    new Game();
   </script>
-</body>
-</html>
+
+</body></html>
